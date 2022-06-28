@@ -9,6 +9,7 @@ const SignIn = () => {
     const { user } = await signInWithGooglePopup();
     console.log(user);
     createUserDocumentFromAuth(user);
+    
   };
 
   return (
