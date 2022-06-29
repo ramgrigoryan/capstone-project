@@ -1,9 +1,17 @@
 import { Outlet, Link } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { ReactComponent as CrwnLogo } from "../../assets/logo/crown.svg";
 import "./navigation.styles.scss";
 
+import { UserContext } from "../../contexts/user.context";
+
 const Navigation = () => {
+  //UseContext as a Hook tells this component whenever value inside useContext updates, re-render,
+  //because we are leveragin currentUser value 
+  //inside of out component and we could be using it. And UserContext changes, because useState changes in UserProvider component.
+  //Any component that is listening for currentUser should be re-rendered
+  const {currentUser} = useContext(UserContext);
+  console.log(currentUser);
   return (
     <Fragment>
       <div className="navigation">
