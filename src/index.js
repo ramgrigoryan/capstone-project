@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.scss";
 import App from "./App";
 import { UserProvider } from "./contexts/user.context";
+import { ProductsProvider } from "./contexts/products.context";
 import reportWebVitals from "./reportWebVitals";
 
 const container = document.getElementById("root");
@@ -11,10 +12,12 @@ const root = ReactDOM.createRoot(container);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    {/* now any component inside of this user provider nested deep within the app
+      {/* now any component inside of this user provider nested deep within the app
      can access the context value inside of the provider itself. */}
       <UserProvider>
-        <App />
+        <ProductsProvider>
+          <App />
+        </ProductsProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
