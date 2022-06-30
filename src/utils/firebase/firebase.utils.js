@@ -6,7 +6,9 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 // Your web app's Firebase configuration
@@ -33,7 +35,7 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth,additionalInfo) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalInfo) => {
   const userDocRef = doc(db, "users", userAuth.uid);
 
   const docSnapshot = await getDoc(userDocRef);
@@ -47,27 +49,29 @@ export const createUserDocumentFromAuth = async (userAuth,additionalInfo) => {
         displayName,
         email,
         createdAt,
-        ...additionalInfo
+        ...additionalInfo,
       });
-      
     } catch (error) {
       console.log("failed to add user", error.message);
     }
-  }
-  else{
-    console.log("User data already set")
+  } else {
+    console.log("User data already set");
   }
   return userDocRef;
 };
 
-export const createAuthUserWithEmailAndPassword = async (email,password) =>{
-    if(!email || !password) return
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
 
-    return await createUserWithEmailAndPassword(auth,email,password);
-}
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
 
-export const signInAuthUserWithEmailAndPassword = async (email,password) =>{
-  if(!email || !password) return
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
 
-  return await signInWithEmailAndPassword(auth,email,password);
-}
+  return await signInWithEmailAndPassword(auth, email, password);
+};
+export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);

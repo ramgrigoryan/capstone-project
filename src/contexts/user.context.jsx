@@ -1,5 +1,8 @@
-import { createContext, useState } from "react";
-
+import { createContext, useState, useEffect } from "react";
+import {
+  onAuthStateChangedListener,
+  createUserDocumentFromAuth,
+} from "../utils/firebase/firebase.utils";
 //Actual value to access
 //Context needs initial/Default Value for itself
 //We have to create base state of what context is goind to be
@@ -20,6 +23,16 @@ export const UserProvider = ({ children }) => {
 
   //Generate value to pass to Provider. It's going to be an object that passes 2 values
   const value = { currentUser, setCurrentUser }; //Both setter function and actual value
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
+      if (user) {
+        createUserDocumentFromAuth(user);
+      }
+      console.log(user);
+      setCurrentUser(user);
+    });
+    return unsubscribe;
+  }, []);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
