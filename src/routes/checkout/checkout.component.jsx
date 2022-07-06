@@ -1,50 +1,40 @@
 import "./checkout.styles.scss";
 import { CartContext } from "../../contexts/cart.context";
 import { useContext } from "react";
-
-const CheckoutRow = ({ item }) => {
-  let { imageUrl, name, quantity, price } = item;
-  const changeQuantity = (incOrDec) => {
-    quantity = incOrDec ? quantity+=1 : quantity-=1;
-    console.log(quantity)
-  };
-  return (
-    <tr>
-      <td>
-        <img src={imageUrl} alt={name} />
-      </td>
-      <td>{name}</td>
-      <td>
-        <span onClick={changeQuantity.bind(this,false)}>&lt;</span>
-        {quantity}
-        <span onClick={changeQuantity.bind(this,true)}>&gt;</span>
-      </td>
-      <td>{price}</td>
-      <td>X</td>
-    </tr>
-  );
-};
+import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 
 const Checkout = () => {
   const { cartItems } = useContext(CartContext);
+
+  const countTotal = (itemList) => {
+    return itemList.reduce((total, current) => {
+      return (total += current.quantity * current.price);
+    }, 0);
+  };
+
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <td>Product</td>
-            <td>Description</td>
-            <td>Quantity</td>
-            <td>Price</td>
-            <td>Delete</td>
-          </tr>
-        </thead>
-        <tbody>
-          {cartItems.map((item) => (
-            <CheckoutRow item={item} key={item.id} />
-          ))}
-        </tbody>
-      </table>
+    <div className="checkout-container">
+      <div className="checkout-header">
+        <div className="header-block">
+          <span>Product</span>
+        </div>
+        <div className="header-block">
+          <span>Description</span>
+        </div>
+        <div className="header-block">
+          <span>Quantity</span>
+        </div>
+        <div className="header-block">
+          <span>Price</span>
+        </div>
+        <div className="header-block">
+          <span>Delete</span>
+        </div>
+      </div>
+      {cartItems.map((item) => (
+        <CheckoutItem item={item} key={item.id} />
+      ))}
+      <span className="total">${countTotal(cartItems)}</span>
     </div>
   );
 };
