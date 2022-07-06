@@ -8,6 +8,7 @@ const Product = ({ product }) => {
   const clickHandler = () => {
     addItemsToCart(product);
   };
+  console.log(product)
   const { name, price, imageUrl } = product;
   return (
     <div className="product-container">
