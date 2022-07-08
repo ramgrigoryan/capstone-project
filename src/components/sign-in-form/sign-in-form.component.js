@@ -4,8 +4,8 @@ import {
 } from "../../utils/firebase/firebase.utils";
 import { useState } from "react";
 import FormInput from "../form-input/form-input.component";
-import "./sign-in-form.styles.scss";
-import Button from "../button/button.component";
+import { SignInContainer, ButtonsContainer } from "./sign-in-form.styles.jsx";
+import Button,{BUTTON_TYPE_CLASSES} from "../button/button.component";
 
 const initialData = {
   email: "",
@@ -29,7 +29,7 @@ const SignInForm = () => {
     setformFields({ ...formFields, [name]: value });
   };
   return (
-    <div className="sign-up-container">
+    <SignInContainer>
       <h2>Already have an account?</h2>
       <span>Sign In</span>
       <form
@@ -75,14 +75,14 @@ const SignInForm = () => {
           value={password}
           required
         />
-        <div className="buttons-container">
+        <ButtonsContainer>
           <Button type="submit">Sign in</Button>
-          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
+          <Button type="button" buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>
             Sign in with Google
           </Button>
-        </div>
+        </ButtonsContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 export default SignInForm;
